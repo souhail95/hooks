@@ -10,6 +10,9 @@ import img9 from './images/9.jpg'
 import img10 from './images/10.jpg'
 import img11 from './images/11.jpg'
 import React,{useRef,useState} from 'react'
+import {Link} from 'react-router-dom';
+import {BrowserRouter as Router,Route} from 'react-router-dom' 
+import ClickHandler from './data1';
 
 
 function Data() {
@@ -95,7 +98,7 @@ const handleChange = value => {
       setSearchText(value);
       filterData(value);
 }
-const filterData = value => {
+const filterData = value => { 
     const lowerCaseValue = value.toLowerCase().trim();
     if(!lowerCaseValue){
         setData1(cardData);
@@ -134,9 +137,13 @@ const ratingInput = useRef();
     
     let arr = data1.concat(product) ;
     setCardData(arr);
-    setData1(arr);       
+    setData1(arr);  
+   
 }
-    return (
+      return (
+         <Router>
+             
+        <Route exact path='/'  render={() => {return (
         <div style={{marginTop:"8%",marginBottom:"15%"}}>
             <div style={{display:"flex",justifyContent:"space-between",marginLeft:"5%",marginRight:"5%",marginBottom:"8%"}}>
                      <div>
@@ -153,8 +160,10 @@ const ratingInput = useRef();
             <form style={{display:"flex",flexDirection:"column"}}>
           <h1 style={{color:"white"}}>Add your favourite movie</h1>      
           <label style={{color:"white"}}>Title:<input placeholder="title" type="text" className="box150" ref={titleInput} required /></label> 
-          <br/>     
+          <br/> 
+          
           <label style={{color:"white"}}>Description:<input placeholder="description" type="text" className="box150" ref={descriptionInput} required /></label> 
+           
           <br/>
           <label style={{color:"white"}}>PosterURL:<input placeholder="posterURL" type="url" className="box150" ref={PosterUrlInput} required /></label> 
           <br/>
@@ -167,40 +176,56 @@ const ratingInput = useRef();
           </form>
           </div>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"30% 30% 30%",marginLeft:"6%"}} >
+          <div style={{display:"grid",textDecoration:"none",gridTemplateColumns:"30% 30% 30%",marginLeft:"6%"}} >
+            
           {data1.map((item) => {
+                localStorage.setItem('text1',item.description); 
+                localStorage.setItem('text2',item.posterURL);
                 return(
-                <div style={{marginLeft:"1.5%",marginRight:"1.5%",marginTop:"1.5%",marginBottom:"1.5%"}}>
-                    <div style={{width:"100%",marginLeft:"1.5%",marginRight:"1.5%",marginTop:"1.5%",backgroundColor:"white",marginBottom:"1.5%",height:"auto",border:"1px solid",borderRadius:"6px 6px 6px 6px"}} >
-                        <a href={item.posterURL}  style={{textDecoration:"none",color:"black"}}>
+                <div style={{marginLeft:"1.5%",marginRight:"1.5%",marginTop:"1.5%",marginBottom:"1.5%",textDecoration:"none"}}>
+                    <div style={{width:"100%",marginLeft:"1.5%",textDecoration:"none",marginRight:"1.5%",marginTop:"1.5%",backgroundColor:"white",marginBottom:"1.5%",height:"auto",border:"1px solid",borderRadius:"6px 6px 6px 6px"}} onClick={() => {localStorage.setItem('text1',item.description); localStorage.setItem('text2',item.posterURL);} }>
+                    <Link to="/description and trailer" style={{textDecoration:"none"}} >
                         <img src={item.img} style={{width:"100%",height:"300px",borderRadius:"6px 6px 6px 6px"}} alt="" />
                         <div  style={{width:"100%",height:"auto",textDecoration:"none",fontFamily:"sans-serif",fontWeight:"bold"}}>
                         <div style={{display:"inline-flex"}}> 
                             <p style={{color:"blue"}} >Title:</p>
-                            <p style={{display:"flex",fontSize:"1.2vw",wordBreak:"break-word",minWidth:"50px"}}>{item.title}</p>
+                            <p style={{display:"flex",fontSize:"1.2vw",wordBreak:"break-word",minWidth:"50px",color:"black"}}>{item.title}</p>
                         </div>
-                        <div style={{display:"inline-flex"}}> 
+                        <div style={{display:"inline-flex"}}>
+                           
                             <p style={{color:"blue"}}>Description:</p>
-                            <p style={{display:"flex",fontSize:"1.2vw",wordBreak:"break-word",minWidth:"50px"}}>{item.description}</p>
+                            <p style={{display:"flex",fontSize:"1.2vw",wordBreak:"break-word",minWidth:"50px",color:"black"}}>{item.description}</p>
+                        
                         </div>
+                        
+                            <div>
                         <div style={{display:"inline-flex"}}> 
+                            
                             <p style={{color:"blue"}}>PosterURL:</p>
-                            <p style={{display:"flex",fontSize:"1.2vw",wordBreak:"break-word",minWidth:"50px"}}> {item.posterURL}</p>
+                            <p style={{display:"flex",fontSize:"1.2vw",wordBreak:"break-word",minWidth:"50px",color:"black"}}> {item.posterURL}</p>
+                          
                         </div>
-                        <div style={{display:"inline-flex"}}> 
-                            <p style={{color:"blue"}}>Rating:</p>
-                            <p style={{display:"flex",fontSize:"1.2vw",wordBreak:"break-word",minWidth:"50px"}} >{item.rating}</p>
+                        <div style={{display:"inline-flex",textDecoration:"none"}}> 
+                            <p style={{color:"blue",textDecoration:"none"}}>Rating:</p>
+                            <p style={{display:"flex",textDecoration:"none",fontSize:"1.2vw",wordBreak:"break-word",minWidth:"50px",color:"black"}} >{item.rating}</p>
                         </div>
                         </div>
-                        </a>
+                         
+                        </div>
+                        </Link>
+                        
                     </div>
                 </div>
                 )
             })}  
-
+           
           </div>
         </div>
-        );  
+        )}} />
+          <Route  path='/description and trailer'  render={() =>( <ClickHandler/> )}/>
+        </Router> 
+        ); 
+
 }
 
 export default Data;
